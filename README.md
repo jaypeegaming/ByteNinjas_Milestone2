@@ -11,5 +11,4 @@ Created by :
 1. Russell Jae Udaundo    | lr.rjudaundo@mmdc.mcl.edu.ph
 2. Trisha Belle Quismundo | lr.tbquismundo@mmdc.mcl.edu.ph
 3. Joy Ann Labiano        | lr.jalabiano@mmdc.mcl.edu.ph
-4. Angelica Fernandez     | lr.afernandez@mmdc.mcl.edu.ph
-5. John Paul Balmaceda    | lr.jpbalmaceda@mmdc.mcl.edu.ph
+4. John Paul Balmaceda    | lr.jpbalmaceda@mmdc.mcl.edu.ph
