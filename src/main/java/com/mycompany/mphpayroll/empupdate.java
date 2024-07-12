@@ -377,7 +377,7 @@ public class empupdate extends javax.swing.JFrame {
         
         this.dispose();
         
-        MainMenu nextForm = new MainMenu();
+        empadmin nextForm = new empadmin();
         nextForm.setVisible(true);
         
         

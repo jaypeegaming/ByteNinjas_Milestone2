@@ -357,7 +357,7 @@ public class empreg extends javax.swing.JFrame {
     private void jb_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_cancelActionPerformed
         
                 
-        MainMenu nextForm1 = new MainMenu();
+        empadmin nextForm1 = new empadmin();
         nextForm1.setVisible(true);
         
         this.dispose();

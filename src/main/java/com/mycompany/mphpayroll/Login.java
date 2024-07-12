@@ -4,8 +4,13 @@
  */
 package com.mycompany.mphpayroll;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+import java.util.List;
 import java.util.*;
 import java.awt.*;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
@@ -53,7 +58,7 @@ public void currentDate(){
 
         jb_login = new javax.swing.JButton();
         text_password = new javax.swing.JPasswordField();
-        jc_position = new javax.swing.JComboBox<>();
+        jc_level = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -68,6 +73,8 @@ public void currentDate(){
         time = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(350, 90));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jb_login.setText("LOG IN");
@@ -79,13 +86,13 @@ public void currentDate(){
         getContentPane().add(jb_login, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 370, 80, -1));
         getContentPane().add(text_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 160, -1));
 
-        jc_position.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Employee" }));
-        jc_position.addActionListener(new java.awt.event.ActionListener() {
+        jc_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Employee" }));
+        jc_level.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jc_positionActionPerformed(evt);
+                jc_levelActionPerformed(evt);
             }
         });
-        getContentPane().add(jc_position, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, -1, -1));
+        getContentPane().add(jc_level, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -99,12 +106,12 @@ public void currentDate(){
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("USER NAME");
+        jLabel3.setText("EMPLOYEE NO.");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Username and Password");
+        jLabel6.setText("Employee Number and Password");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -145,16 +152,70 @@ public void currentDate(){
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jc_positionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jc_positionActionPerformed
+    private void jc_levelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jc_levelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jc_positionActionPerformed
+    }//GEN-LAST:event_jc_levelActionPerformed
 
     private void jb_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_loginActionPerformed
+       
+        
+      if (text_user.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Username Field is empty");
+    } else if (text_password.getPassword().equals("")) {
+        JOptionPane.showMessageDialog(this, "Password Field is empty");
+    }else {
+        
+        String csvFile = "mphdetails.csv";
+        boolean dataFound = false;
+        String empID = null;
         
         
-        
-        
-        
+        try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
+            List<String[]> allRows = reader.readAll();
+            
+            for (String[] row : allRows) {
+                
+                String userData = row[0];
+                String passData = row[20];
+                String levelData = row[19];
+                
+                if (text_user.getText().equals(userData) && 
+                    text_password.getText().equals(passData) &&
+                    jc_level.getSelectedItem().equals(levelData)) {
+                    dataFound = true;
+                    empID = row[0];
+                    break;
+                }
+            }
+            
+                if (dataFound) {
+                    
+                    JOptionPane.showMessageDialog(this,"Login Successful!");
+                    this.dispose();
+ 
+                    if (jc_level.getSelectedItem().equals("Admin")) {
+
+                        empadmin nextForm = new empadmin(empID);
+                        nextForm.setVisible(true);
+                    
+                    } else if (jc_level.getSelectedItem().equals("Employee")) {
+                
+                        emppage nextForm = new emppage(empID);
+                        nextForm.setVisible(true);    
+                    
+                }
+            }else {
+                
+                JOptionPane.showMessageDialog(this,"Invalid Username or Password!");
+                
+            }
+        } catch (IOException | CsvException e) {
+            
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,"Error Reading CSV File.");
+            
+        }      
+    }
     }//GEN-LAST:event_jb_loginActionPerformed
 
     /**
@@ -204,7 +265,7 @@ public void currentDate(){
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton jb_login;
-    private javax.swing.JComboBox<String> jc_position;
+    private javax.swing.JComboBox<String> jc_level;
     private javax.swing.JPasswordField text_password;
     public javax.swing.JTextField text_user;
     private javax.swing.JMenu time;
